@@ -1,8 +1,10 @@
 "use client";
 import Link from "next/link";
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import CardView from "@/components/CardView";
+import Common from "@/components/Common";
+import Confetti from "@/components/Confetti";
 import { decodeCard } from "@/lib/card";
 import { SavedCard } from "@/lib/saved";
 import { useStored } from "@/lib/storage";
@@ -12,6 +14,7 @@ function Inner() {
   const d = params.get("d");
   const card = useMemo(() => (d ? decodeCard(d) : null), [d]);
   const [saved, setSaved] = useStored<SavedCard[]>("soiree:saved", []);
+  const [fire, setFire] = useState(0);
 
   if (!card) {
     return (
@@ -23,11 +26,16 @@ function Inner() {
     );
   }
   const already = saved.some((s) => s.id === card.id);
-  const save = () => setSaved((list) => [{ ...card, fav: false, memo: "", savedAt: Date.now() }, ...list.filter((s) => s.id !== card.id)]);
+  const save = () => {
+    setSaved((list) => [{ ...card, fav: false, memo: "", savedAt: Date.now() }, ...list.filter((s) => s.id !== card.id)]);
+    setFire((n) => n + 1);
+  };
 
   return (
     <div className="narrow">
+      <Confetti fire={fire} />
       <CardView card={card} />
+      <Common card={card} />
       <div className="btn-row center">
         {already ? (
           <Link className="btn" href="/cards">名刺帳で見る ✓ 保存済み</Link>

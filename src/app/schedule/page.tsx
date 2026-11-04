@@ -1,5 +1,5 @@
 import Timeline from "@/components/Timeline";
-import { event } from "@/data/event";
+import { dateLabel, event } from "@/data/event";
 
 export const metadata = { title: "本日のスケジュール｜Soirée" };
 
@@ -10,7 +10,7 @@ export default function SchedulePage() {
         <p className="eyebrow">Today’s Program</p>
         <h1>本日のスケジュール</h1>
         <div className="ornament" aria-hidden>❦</div>
-        <p className="lead">{event.dateLabel}</p>
+        <p className="lead">{dateLabel}</p>
       </header>
 
       <Timeline />

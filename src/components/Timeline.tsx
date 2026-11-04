@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { event, schedule } from "@/data/event";
+import { dateLabel, event, schedule } from "@/data/event";
 
 const toMin = (t: string) => {
   const [h, m] = t.split(":").map(Number);
@@ -29,7 +29,7 @@ export function useSchedule() {
   };
   const nowIdx = live ? schedule.findIndex((_, i) => status(i) === "now") : -1;
   const nextIdx = live ? schedule.findIndex((_, i) => status(i) === "later") : -1;
-  return { live, status, nowIdx, nextIdx };
+  return { live, status, nowIdx, nextIdx, now, mins };
 }
 
 export default function Timeline() {
@@ -59,7 +59,7 @@ export default function Timeline() {
           );
         })}
       </ol>
-      {!live && <p className="hint">※ 開催当日（{event.dateLabel}）は、現在の進行状況が自動で表示されます。</p>}
+      {!live && <p className="hint">※ 開催当日（{dateLabel}）は、現在の進行状況が自動で表示されます。</p>}
     </>
   );
 }

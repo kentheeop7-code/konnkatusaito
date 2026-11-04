@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import CardView from "@/components/CardView";
+import Common from "@/components/Common";
 import { SavedCard } from "@/lib/saved";
 import { useStored } from "@/lib/storage";
 
@@ -14,6 +15,7 @@ export default function CardsPage() {
     if (confirm(`${name}さんのカードを削除しますか？`)) setSaved((l) => l.filter((c) => c.id !== id));
   };
   const list = onlyFav ? saved.filter((c) => c.fav) : saved;
+  const favs = saved.filter((c) => c.fav).sort((a, b) => (parseInt(a.number) || 999) - (parseInt(b.number) || 999));
 
   return (
     <>
@@ -40,10 +42,26 @@ export default function CardsPage() {
         </section>
       )}
 
+      {favs.length > 0 && (
+        <section className="panel vote">
+          <h2>💌 投票メモ</h2>
+          <p className="small">「気になる」にした方です。投票用紙に番号を書くときの控えにどうぞ。</p>
+          <ul>
+            {favs.map((c) => (
+              <li key={c.id}>
+                <b>{c.number ? `No.${c.number}` : "No.—"}</b>
+                <span>{c.icon} {c.name}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <div className="card-grid">
         {list.map((c) => (
           <div key={c.id} className="saved">
             <CardView card={c} />
+            <Common card={c} />
             <div className="saved-tools">
               <button className={c.fav ? "heart on" : "heart"} onClick={() => patch(c.id, { fav: !c.fav })} aria-pressed={c.fav}>
                 {c.fav ? "♥ 気になる" : "♡ 気になる"}

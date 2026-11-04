@@ -1,14 +1,17 @@
 // 開催ごとにこのファイルを書き換えるだけで、スケジュールと連絡先が更新されます。
 
 export const event = {
-  title: "Soirée 秋の婚活パーティー",
-  date: "2026-11-03", // YYYY-MM-DD（当日のみ「進行中」表示になります）
-  dateLabel: "2026年11月3日（火・祝）",
+  title: "Soirée 婚活パーティー",
+  date: "2026-11-23", // YYYY-MM-DD（当日のみ「進行中」表示になります）
   venue: "ホテル グランベル 2F「ル・サロン」",
   address: "東京都千代田区丸の内1-1-1",
   mapUrl: "https://www.google.com/maps/search/?api=1&query=東京駅",
   dress: "スマートカジュアル",
 };
+
+// 例: 2026年11月23日（月）— date から自動生成
+const [y, m, d] = event.date.split("-").map(Number);
+export const dateLabel = `${y}年${m}月${d}日（${"日月火水木金土"[new Date(y, m - 1, d).getDay()]}）`;
 
 export type Slot = {
   start: string; // HH:mm
