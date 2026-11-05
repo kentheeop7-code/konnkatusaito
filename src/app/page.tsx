@@ -5,8 +5,9 @@ import WelcomeLink from "@/components/WelcomeLink";
 
 const links = [
   { href: "/schedule", title: "スケジュール", desc: "今夜の流れ", icon: "◷" },
-  { href: "/profile", title: "マイカード", desc: "記入してQRで共有", icon: "♡" },
-  { href: "/cards", title: "名刺帳", desc: "カード・メモ・気になる人", icon: "❏" },
+  { href: "/profile", title: "マイカード", desc: "会話のネタを仕込もう", icon: "♡" },
+  { href: "/exchange", title: "カード交換", desc: "QRを見せる・読み取る", icon: "⇄" },
+  { href: "/cards", title: "名刺帳", desc: "スタンプ・相性順・メモ", icon: "❏" },
   { href: "/talk", title: "話題ガチャ", desc: "会話に詰まったら", icon: "✦" },
   { href: "/contact", title: "連絡先", desc: "幹事・運営へ", icon: "✉" },
 ];

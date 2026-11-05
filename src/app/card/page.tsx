@@ -27,7 +27,7 @@ function Inner() {
   }
   const already = saved.some((s) => s.id === card.id);
   const save = () => {
-    setSaved((list) => [{ ...card, fav: false, memo: "", savedAt: Date.now() }, ...list.filter((s) => s.id !== card.id)]);
+    setSaved((list) => [{ ...card, fav: false, memo: "", stamps: [], savedAt: Date.now() }, ...list.filter((s) => s.id !== card.id)]);
     setFire((n) => n + 1);
   };
 

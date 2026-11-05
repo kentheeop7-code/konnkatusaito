@@ -14,6 +14,22 @@ export const HOBBY_PRESETS = [
   "ドライブ", "グルメ", "写真", "スポーツ観戦", "ランニング", "キャンプ", "お酒", "ペット",
 ];
 
+// 「私を動物に例えると？」
+export const ANIMALS = ["🐶 わんこ系", "🐱 ねこ系", "🐰 うさぎ系", "🦊 きつね系", "🐻 くま系", "🐧 ペンギン系", "🦉 ふくろう系", "🐼 パンダ系", "🦦 カワウソ系", "🐿️ りす系"];
+
+// どっち派？（a / b のどちらか）
+export const PAIRS: { a: string; b: string }[] = [
+  { a: "犬派", b: "猫派" },
+  { a: "朝型", b: "夜型" },
+  { a: "海", b: "山" },
+  { a: "甘党", b: "辛党" },
+  { a: "インドア", b: "アウトドア" },
+  { a: "きのこの山", b: "たけのこの里" },
+  { a: "お家デート", b: "お出かけデート" },
+  { a: "計画派", b: "ノリ派" },
+];
+export const NO_PICKS = "-".repeat(PAIRS.length);
+
 export type Card = {
   id: string;
   name: string;
@@ -27,6 +43,11 @@ export type Card = {
   message: string;
   icon: string;
   tone: ToneKey;
+  animal: string;
+  hook: string; // これ聞いて！
+  picks: string; // "a" | "b" | "-" × PAIRS.length
+  tl: string[]; // ウソ当てクイズ: 3つの主張
+  lie: number; // tl のうちウソの番号（未設定は -1）
 };
 
 export const emptyCard = (): Card => ({
@@ -42,6 +63,11 @@ export const emptyCard = (): Card => ({
   message: "",
   icon: ICONS[0],
   tone: "rose",
+  animal: "",
+  hook: "",
+  picks: NO_PICKS,
+  tl: ["", "", ""],
+  lie: -1,
 });
 
 export const newId = () =>
@@ -56,6 +82,9 @@ function sanitize(raw: unknown): Card | null {
   const hobbies = Array.isArray(r.hobbies)
     ? r.hobbies.filter((h): h is string => typeof h === "string").slice(0, 8).map((h) => h.slice(0, 16))
     : [];
+  const tl = Array.isArray(r.tl) ? [0, 1, 2].map((i) => str(r.tl instanceof Array ? r.tl[i] : "", 40)) : ["", "", ""];
+  const lie = typeof r.lie === "number" && r.lie >= 0 && r.lie <= 2 ? Math.floor(r.lie) : -1;
+  const picks = typeof r.picks === "string" && new RegExp(`^[ab-]{${PAIRS.length}}$`).test(r.picks) ? r.picks : NO_PICKS;
   const card: Card = {
     id: str(r.id, 20) || newId(),
     name: str(r.name, 20),
@@ -69,13 +98,33 @@ function sanitize(raw: unknown): Card | null {
     message: str(r.message, 200),
     icon: str(r.icon, 4) || ICONS[0],
     tone,
+    animal: str(r.animal, 14),
+    hook: str(r.hook, 60),
+    picks,
+    tl,
+    lie,
   };
   return card.name ? card : null;
 }
 
+// 保存済みデータに新しい項目がなくても動くよう補う
+export const withDefaults = (c: Partial<Card>): Card => ({ ...emptyCard(), ...c });
+
+// QRコードを読み取りやすくするため、キー名なしの配列にして短くする
+const KEYS = ["id", "name", "number", "age", "job", "area", "hobbies", "holiday", "food", "message", "icon", "tone", "animal", "hook", "picks", "tl", "lie"] as const;
+
+function pack(card: Card): unknown[] {
+  const arr: unknown[] = KEYS.map((k) => card[k]);
+  if (card.picks === NO_PICKS) arr[14] = "";
+  if (card.tl.every((t) => !t)) arr[15] = [];
+  if (card.lie < 0) arr[16] = -1;
+  while (arr.length && (arr[arr.length - 1] === "" || (Array.isArray(arr[arr.length - 1]) && (arr[arr.length - 1] as unknown[]).length === 0))) arr.pop();
+  return arr;
+}
+
 // UTF-8 → base64url（URLに載せて共有するため）
 export function encodeCard(card: Card): string {
-  const bytes = new TextEncoder().encode(JSON.stringify(card));
+  const bytes = new TextEncoder().encode(JSON.stringify(pack(card)));
   let bin = "";
   bytes.forEach((b) => (bin += String.fromCharCode(b)));
   return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
@@ -86,8 +135,20 @@ export function decodeCard(data: string): Card | null {
     const b64 = data.replace(/-/g, "+").replace(/_/g, "/");
     const bin = atob(b64 + "=".repeat((4 - (b64.length % 4)) % 4));
     const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
-    return sanitize(JSON.parse(new TextDecoder().decode(bytes)));
+    const parsed = JSON.parse(new TextDecoder().decode(bytes));
+    const obj = Array.isArray(parsed) ? Object.fromEntries(KEYS.map((k, i) => [k, parsed[i]])) : parsed;
+    return sanitize(obj);
   } catch {
     return null;
   }
+}
+
+// QRコードやリンクの文字列からカードを取り出す
+export function cardFromText(text: string): Card | null {
+  const t = text.trim();
+  try {
+    const d = new URL(t).searchParams.get("d");
+    if (d) return decodeCard(d);
+  } catch {}
+  return decodeCard(t);
 }
