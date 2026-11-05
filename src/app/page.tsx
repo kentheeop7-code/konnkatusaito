@@ -59,6 +59,8 @@ export default function Home() {
 
       <p className="center">
         <WelcomeLink />
+        {" ・ "}
+        <Link href="/join" className="link-quiet">アプリをみんなに共有（QR）</Link>
       </p>
     </>
   );
