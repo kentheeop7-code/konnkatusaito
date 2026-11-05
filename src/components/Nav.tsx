@@ -16,7 +16,7 @@ export default function Nav() {
   return (
     <nav className="nav" aria-label="メインメニュー">
       <Link href="/" className="nav-brand">
-        Soirée
+        Katamachi Night
       </Link>
       <ul>
         {items.map((it) => {

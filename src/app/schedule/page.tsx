@@ -1,7 +1,7 @@
 import Timeline from "@/components/Timeline";
 import { dateLabel, event } from "@/data/event";
 
-export const metadata = { title: "本日のスケジュール｜Soirée" };
+export const metadata = { title: "本日のスケジュール｜片町ナイト" };
 
 export default function SchedulePage() {
   return (
@@ -16,10 +16,10 @@ export default function SchedulePage() {
       <Timeline />
 
       <section className="panel venue">
-        <h2>会場のご案内</h2>
+        <h2>集合場所</h2>
         <p><b>{event.venue}</b></p>
-        <p>{event.address}</p>
-        <a className="btn ghost" href={event.mapUrl} target="_blank" rel="noopener noreferrer">地図を開く</a>
+        <p className="small">{event.venueNote}</p>
+        <p className="small">※ {event.gather}（{event.time.split("〜")[0]}の5分前）にお集まりください。</p>
       </section>
     </>
   );

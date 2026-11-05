@@ -1,9 +1,9 @@
 export const TONES = {
-  rose: { label: "ローズ", from: "#e8b4b8", to: "#b8607a" },
-  gold: { label: "シャンパン", from: "#e6cf9d", to: "#a9843f" },
+  rose: { label: "コーラル", from: "#f7bdb5", to: "#e9756a" },
+  gold: { label: "スター", from: "#f6e2a6", to: "#d9a93f" },
   navy: { label: "ネイビー", from: "#7f93b8", to: "#2c3e68" },
-  sage: { label: "セージ", from: "#b5c9b0", to: "#5f8068" },
-  plum: { label: "プラム", from: "#c9a3c9", to: "#6b3a6e" },
+  sage: { label: "ミント", from: "#b4e0dc", to: "#4f9b98" },
+  plum: { label: "ラベンダー", from: "#cfc8ee", to: "#7d6bb5" },
 } as const;
 export type ToneKey = keyof typeof TONES;
 

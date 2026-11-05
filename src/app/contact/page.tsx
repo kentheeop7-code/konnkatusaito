@@ -1,6 +1,6 @@
 import { contacts } from "@/data/event";
 
-export const metadata = { title: "連絡先｜Soirée" };
+export const metadata = { title: "連絡先｜片町ナイト" };
 
 export default function ContactPage() {
   return (

@@ -43,9 +43,9 @@ export default function NextUp() {
       <section className="live">
         <p className="eyebrow">Today</p>
         <p className="big">
-          開場まであと <b>{fmt(first - mins)}</b>
+          集合まであと <b>{fmt(first - mins)}</b>
         </p>
-        <p className="live-sub">受付は {schedule[0].start} から。カードの準備をしておきましょう ✨</p>
+        <p className="live-sub">集合は {schedule[0].start} から。カードの準備をしておきましょう ✨</p>
         <Link href="/profile" className="btn light">カードを確認する</Link>
       </section>
     );

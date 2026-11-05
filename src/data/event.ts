@@ -1,17 +1,28 @@
-// 開催ごとにこのファイルを書き換えるだけで、スケジュールと連絡先が更新されます。
+// 開催ごとにこのファイルを書き換えるだけで、全ページの内容が更新されます。
 
 export const event = {
-  title: "Soirée 婚活パーティー",
-  date: "2026-11-23", // YYYY-MM-DD（当日のみ「進行中」表示になります）
-  venue: "ホテル グランベル 2F「ル・サロン」",
-  address: "東京都千代田区丸の内1-1-1",
-  mapUrl: "https://www.google.com/maps/search/?api=1&query=東京駅",
-  dress: "スマートカジュアル",
+  brand: "Katamachi Night",
+  title: "片町ナイト カジュアル合コン",
+  tagline: "素敵な出会いを見つけよう",
+  date: "2026-12-26", // YYYY-MM-DD（当日のみ「進行中」表示になります）
+  time: "19:00〜21:00",
+  gather: "5分前集合",
+  venue: "片町周辺",
+  venueNote: "細部は人数が決まり次第、追ってご連絡します",
 };
 
-// 例: 2026年11月23日（月）— date から自動生成
+// 例: 2026年12月26日（土）— date から自動生成
 const [y, m, d] = event.date.split("-").map(Number);
 export const dateLabel = `${y}年${m}月${d}日（${"日月火水木金土"[new Date(y, m - 1, d).getDay()]}）`;
+
+// 開催概要（ホームに表示）
+export const info = [
+  { icon: "📅", label: "日時", lines: [`${dateLabel}`, `${event.time}（${event.gather}）`] },
+  { icon: "📍", label: "場所", lines: [event.venue, event.venueNote] },
+  { icon: "¥", label: "参加費及び飲食代", lines: ["男性 6,000円", "女性 3,000円", "※飲み放題付き"], note: "お支払いは現金または PayPay" },
+  { icon: "✎", label: "参加条件", lines: ["20歳から32歳までの男性と女性"], note: "友達探しや恋人探し大歓迎" },
+  { icon: "📱", label: "お申込み", lines: ["サイトより申し込み"] },
+];
 
 export type Slot = {
   start: string; // HH:mm
@@ -22,31 +33,29 @@ export type Slot = {
 };
 
 export const schedule: Slot[] = [
-  { start: "13:00", end: "13:30", title: "受付・ウェルカムドリンク", desc: "名札とプロフィールカードをお渡しします。アプリで自己紹介カードの記入もどうぞ。", icon: "🥂" },
-  { start: "13:30", end: "13:45", title: "開会のご挨拶・ルール説明", desc: "本日の流れとマナーについてご案内します。", icon: "🎤" },
-  { start: "13:45", end: "14:45", title: "1対1 トークタイム", desc: "全員と順番にお話しします。1人あたり約5分、男性が席を移動します。", icon: "💬" },
-  { start: "14:45", end: "15:00", title: "休憩・カード交換", desc: "気になった方のカードをQRコードで受け取りましょう。", icon: "🌸" },
-  { start: "15:00", end: "15:50", title: "フリータイム", desc: "ご自由に歓談いただけます。ドリンク・軽食をお楽しみください。", icon: "🍰" },
-  { start: "15:50", end: "16:10", title: "マッチング投票", desc: "気になった方の番号を投票用紙にご記入ください。", icon: "💌" },
-  { start: "16:10", end: "16:30", title: "結果発表・閉会", desc: "カップル成立の発表と、連絡先交換のご案内をいたします。", icon: "💍" },
+  { start: "18:55", end: "19:00", title: "集合・受付", desc: "5分前までにお集まりください。お支払い（現金またはPayPay）もこのときに。", icon: "🕊️" },
+  { start: "19:00", end: "19:15", title: "乾杯・自己紹介", desc: "幹事のあいさつのあと、まずは乾杯！ アプリの自己紹介カードも使ってみてください。", icon: "🥂" },
+  { start: "19:15", end: "19:55", title: "席替えトーク", desc: "席を替えながら、みんなとお話しします。会話に詰まったら「話題ガチャ」をどうぞ。", icon: "💬" },
+  { start: "19:55", end: "20:40", title: "フリータイム", desc: "飲み放題をお楽しみください。気になる方のカードはQRコードで受け取れます。", icon: "🍸" },
+  { start: "20:40", end: "20:55", title: "連絡先交換タイム", desc: "気になった方と、お互いの合意のうえで連絡先を交換しましょう。", icon: "💌" },
+  { start: "20:55", end: "21:00", title: "ごあいさつ・終了", desc: "本日はありがとうございました。帰り道はお気をつけて。", icon: "🌙" },
 ];
 
 export const contacts = {
-  organizer: "Soirée 運営事務局",
-  hours: "平日 10:00〜19:00 ／ 開催当日 12:00〜17:00",
+  organizer: "片町ナイト 運営",
+  hours: "開催当日 18:00〜21:30（それ以外はメッセージでご連絡ください）",
   items: [
-    { kind: "tel", label: "お電話", value: "03-0000-0000", href: "tel:0300000000", note: "開催当日の緊急連絡はこちら" },
+    { kind: "tel", label: "お電話", value: "000-0000-0000", href: "tel:00000000000", note: "当日の遅刻・道に迷ったときはこちら" },
     { kind: "mail", label: "メール", value: "info@example.com", href: "mailto:info@example.com", note: "ご質問・ご相談はお気軽に" },
-    { kind: "line", label: "LINE公式", value: "@soiree-event", href: "https://line.me/R/ti/p/@soiree-event", note: "次回イベントのご案内も配信中" },
-    { kind: "insta", label: "Instagram", value: "@soiree_event", href: "https://www.instagram.com/soiree_event/", note: "開催の様子をご覧いただけます" },
+    { kind: "line", label: "LINE", value: "@katamachi-night", href: "https://line.me/R/ti/p/@katamachi-night", note: "会場の詳細や次回のご案内をお届けします" },
+    { kind: "insta", label: "Instagram", value: "@katamachi_night", href: "https://www.instagram.com/katamachi_night/", note: "開催の様子をご覧いただけます" },
   ],
   staff: [
-    { name: "司会・進行", who: "佐藤", note: "会場内でお気軽にお声がけください" },
-    { name: "受付・案内", who: "田中", note: "入口カウンターにおります" },
+    { name: "幹事", who: "（お名前）", note: "会場でお気軽にお声がけください" },
   ],
   notice: [
-    "お相手のご連絡先は、双方の同意があった場合のみ運営からお伝えします。",
-    "しつこい勧誘や無断での連絡先の共有・SNS投稿はお控えください。",
-    "体調不良やトラブルの際は、すぐにスタッフまでお知らせください。",
+    "連絡先の交換は、お互いの合意があった場合のみにしましょう。",
+    "しつこい勧誘や、無断での写真撮影・SNS投稿はお控えください。",
+    "飲み過ぎにご注意を。体調不良やトラブルのときは、すぐ幹事にお知らせください。",
   ],
 };

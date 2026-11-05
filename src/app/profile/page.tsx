@@ -5,7 +5,7 @@ import CardView from "@/components/CardView";
 import { Card, HOBBY_PRESETS, ICONS, TONES, ToneKey, emptyCard, encodeCard, newId } from "@/lib/card";
 import { useStored } from "@/lib/storage";
 
-const AGES = ["20代前半", "20代後半", "30代前半", "30代後半", "40代前半", "40代後半", "50代以上"];
+const AGES = ["20代前半", "20代後半", "30代前半", "ひみつ"];
 
 export default function ProfilePage() {
   const [card, setCard, ready] = useStored<Card>("soiree:mycard", emptyCard());
@@ -163,7 +163,7 @@ export default function ProfilePage() {
               <>
                 <p className="small">気になる方にこのQRコードを読み取ってもらうと、あなたのカードを受け取れます。</p>
                 <div className="qr">
-                  <QRCodeSVG value={url} size={180} fgColor="#3a2433" bgColor="#ffffff" level="L" marginSize={2} />
+                  <QRCodeSVG value={url} size={180} fgColor="#2f4170" bgColor="#ffffff" level="L" marginSize={2} />
                 </div>
                 <div className="btn-row">
                   <button className="btn" onClick={copy}>{copied ? "コピーしました ✓" : "リンクをコピー"}</button>
